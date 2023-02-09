@@ -1,8 +1,8 @@
 import java.io.BufferedReader;
+import java.util.Collections;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Scanner;
+import java.util.*;
 
 public class MovieCollection {
   private ArrayList<Movie> movies;
@@ -160,6 +160,7 @@ public class MovieCollection {
       listToSort.set(possibleIndex, temp);
     }
   }
+
   
   private void displayMovieInfo(Movie movie) {
     System.out.println();
@@ -218,33 +219,65 @@ public class MovieCollection {
   }
 
   private void searchCast() {
+    //Scanner print
     System.out.print("Enter a person to search for (first or last name): ");
-    String name = scanner.nextLine();
+    String personSearch = scanner.nextLine();
+    personSearch = personSearch.toLowerCase();
+    ArrayList<String> castList2 = new ArrayList<String>();
+    ArrayList<String> castList3 = new ArrayList<String>();
+    ArrayList<Movie> listOfMovies = new ArrayList<>();
 
-    name = name.toLowerCase();
-
-    ArrayList<String> castResults = new ArrayList<>();
 
 
-    for (int i = 0; i < movies.size(); i++){
-      String cast = movies.get(i).getCast();
+    //loop through the movies list cast and add them into a string to parse into an array
+    for (Movie movie : movies){
+      String cast = movie.getCast();
       String[] castList = cast.split("\\|");
 
-      String actor = castList[0];
 
+      for (String a : castList){
+        if (a.toLowerCase().contains(personSearch)){
+          castList2.add(a);
+        }
+      }
     }
 
-    System.out.println(castResults);
+    //gets rid of duplicates
+    for (String b : castList2) {
+      if (!castList3.contains(b)) {
+        castList3.add(b);
+      }
+    }
+
+    //sorts the list
+    Collections.sort(castList3);
+    for (int i = 0; i < castList3.size(); i++){
+      int index = i + 1;
+      System.out.println(index + ". " + castList3.get(i));
+    }
+
+    System.out.println("Which would you like to see all movies for? ");
+    System.out.print("Enter number: ");
+    int choice = scanner.nextInt();
+    scanner.nextLine();
+
+    String selectedActor = castList3.get(choice - 1);
+
+    for (int i = 0 ; i < movies.size(); i++){
+      if (movies.get(i).getCast().contains(selectedActor)){
+        listOfMovies.add(movies.get(i));
+      }
+    }
+
+    sortResults(listOfMovies);
+
+    for (Movie movie : listOfMovies){
+      System.out.println(movie.getTitle());
+    }
 
 
+}
 
-
-
-
-
-
-
-  }
   
   private void listGenres() {
     /* TASK 5: IMPLEMENT ME */
