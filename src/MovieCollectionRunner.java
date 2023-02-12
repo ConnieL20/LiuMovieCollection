@@ -7,11 +7,8 @@ public class MovieCollectionRunner {
        a new MovieCollection object from the movies in the movies_data.csv file,
        get the movies arraylist, and print out each movie.
        use the code in the CerealCollectionRunner as an example. */
-    String csvFile = "src\\movies_data.csv";
+    String csvFile = "/Users/connieliu-mac/IdeaProjects/LiuMovieCollection/src/movies_data.csv";
     MovieCollection collection = new MovieCollection(csvFile);
     collection.menu();
-
-
-
   }
 }

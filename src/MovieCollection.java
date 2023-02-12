@@ -3,6 +3,7 @@ import java.util.Collections;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class MovieCollection {
   private ArrayList<Movie> movies;
@@ -161,7 +162,7 @@ public class MovieCollection {
     }
   }
 
-  
+
   private void displayMovieInfo(Movie movie) {
     System.out.println();
     System.out.println("Title: " + movie.getTitle());
@@ -281,23 +282,23 @@ public class MovieCollection {
         System.out.println("" + choiceNum + ". " + title);
       }
 
-    System.out.println("Which movie would you like to learn more about?");
-    System.out.print("Enter number: ");
-    int choice2 = scanner.nextInt();
-    scanner.nextLine();
-    Movie selectedMovie = listOfMovies.get(choice - 1);
-    displayMovieInfo(selectedMovie);
-    System.out.println("\n ** Press Enter to Return to Main Menu **");
-    scanner.nextLine();
-  } else {
-    System.out.println("\nNo movie titles match that search term!");
-    System.out.println("** Press Enter to Return to Main Menu **");
-    scanner.nextLine();
+      System.out.println("Which movie would you like to learn more about?");
+      System.out.print("Enter number: ");
+      int choice2 = scanner.nextInt();
+      scanner.nextLine();
+      Movie selectedMovie = listOfMovies.get(choice - 1);
+      displayMovieInfo(selectedMovie);
+      System.out.println("\n ** Press Enter to Return to Main Menu **");
+      scanner.nextLine();
+    } else {
+      System.out.println("\nNo movie titles match that search term!");
+      System.out.println("** Press Enter to Return to Main Menu **");
+      scanner.nextLine();
+    }
+
+
   }
 
-
-}
-  
   private void listGenres() {
     ArrayList<String> genreList2 = new ArrayList<>();
     ArrayList<Movie> genreMovieList = new ArrayList<>();
@@ -363,31 +364,28 @@ public class MovieCollection {
 
 
   }
-  
+
+
   private void listHighestRated() {
-    ArrayList<Movie> top50List = new ArrayList<>();
-    ArrayList<Double> top50Rating = new ArrayList<>();
+    // Sort movies by userRating field
+    movies.sort(new Comparator<Movie>() {
+      @Override
+      public int compare(Movie o1, Movie o2) {
+        return Double.compare(o2.getUserRating(), o1.getUserRating());
+      }
+    });
 
-    for (int i = 0; i < movies.size(); i++){
-      top50Rating.add(movies.get(i).getUserRating());
-    }
-
-    Collections.sort(top50Rating);
-    Collections.reverse(top50Rating);
-
-    for (int i = 0; i < movies.size(); i++){
+    List<Movie> top50List = new ArrayList<>();
+    for (int i = 0; i< 50;i++) {
       top50List.add(movies.get(i));
     }
 
-
-
-
     if (top50List.size() > 0) {
       for (int i = 0; i < 50; i++) {
-        String title = top50List.get(i).getTitle();
+        Movie currentMovie = top50List.get(i);
 
         int choiceNum = i + 1;
-        System.out.println("" + choiceNum + ". " + title + ": " + top50Rating.get(i));
+        System.out.println("" + choiceNum + ". " + currentMovie.getTitle() + ": " + currentMovie.getUserRating());
       }
 
       System.out.println("Which movie would you like to learn more about?");
@@ -403,48 +401,47 @@ public class MovieCollection {
       System.out.println("** Press Enter to Return to Main Menu **");
       scanner.nextLine();
     }
-//    HashMap<String, Double> top50List = new HashMap<>();
-//    ArrayList<Double> list = new ArrayList<>();
-//    LinkedHashMap<String, Double> top50List2 = new LinkedHashMap<>();
-//
-//    for (int i = 0; i < movies.size(); i++){
-//      top50List.put(movies.get(i).getTitle(), movies.get(i).getUserRating());
-//    }
-//
-////    for (String i : top50List.keySet()){
-////      System.out.println("Title: " + i + " Rating: " + top50List.get(i));
-////    }
-//
-//    for (Map.Entry<String, Double> entry: top50List.entrySet()){
-//      list.add(entry.getValue());
-//    }
-//
-//    Collections.sort(list, new Comparator<Double>() {
-//      @Override
-//      public int compare(Double o1, Double o2) {
-//        return (o1).compareTo(o2);
-//      }
-//    });
-//
-//    for (Double a : list){
-//      for (Map.Entry<String, Double> entry : top50List.entrySet()){
-//        if (entry.getValue() == a){
-//          top50List2.put(entry.getKey(), a);
-//        }
-//      }
-//      for (int i = 0; i < top50List2.size(); i++){
-//        System.out.println(top50List2.get(i));
-//
-//      }
-//
-//
-//    }
-//
 
 
   }
-  
+
   private void listHighestRevenue() {
-    /* TASK 6: IMPLEMENT ME */
+// Sort movies by userRating field
+    movies.sort(new Comparator<Movie>() {
+      @Override
+      public int compare(Movie o1, Movie o2) {
+        return Double.compare(o2.getRevenue(), o1.getRevenue());
+      }
+    });
+
+    List<Movie> top50Revenue = new ArrayList<>();
+    for (int i = 0; i < 50; i++) {
+      top50Revenue.add(movies.get(i));
+    }
+
+    if (top50Revenue.size() > 0) {
+      for (int i = 0; i < 50; i++) {
+        Movie currentMovie = top50Revenue.get(i);
+
+        int choiceNum = i + 1;
+        System.out.println("" + choiceNum + ". " + currentMovie.getTitle() + ": " + currentMovie.getRevenue());
+      }
+
+      System.out.println("Which movie would you like to learn more about?");
+      System.out.print("Enter number: ");
+      int choice = scanner.nextInt();
+      scanner.nextLine();
+      Movie selectedMovie = top50Revenue.get(choice - 1);
+      displayMovieInfo(selectedMovie);
+      System.out.println("\n ** Press Enter to Return to Main Menu **");
+      scanner.nextLine();
+    } else {
+      System.out.println("\nNo movie titles match that search term!");
+      System.out.println("** Press Enter to Return to Main Menu **");
+      scanner.nextLine();
+    }
+
+
+
   }
 }
